@@ -149,7 +149,7 @@ client.on('messageCreate', async message => {
                 if (!member.user.bot) {
                     const alreadyHasMessage = await userHasMessage(member.user, content);
                     if (!alreadyHasMessage) {
-                        await member.send(content)
+                        member.send(content)
                             .then(() => console.log(`Message sent to ${member.user.tag}: ${content}`))
                             .catch(err => console.error(`Could not send message to ${member.user.tag}: ${err}`));
                         await sleep(delayBetweenMessages);
