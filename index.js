@@ -149,27 +149,26 @@ client.on('messageCreate', async message => {
                 if (!member.user.bot) {
                     const alreadyHasMessage = await userHasMessage(member.user, content);
                     if (!alreadyHasMessage) {
-                        member.send(content)
+                        await member.send(content)
                             .then(() => console.log(`Message sent to ${member.user.tag}: ${content}`))
                             .catch(err => console.error(`Could not send message to ${member.user.tag}: ${err}`));
                         await sleep(delayBetweenMessages);
+                        batchCount++;
+                        totalCount++;
                     } else {
                         console.log(`User ${member.user.tag} already has the message: ${content}`);
                     }
-
-                    batchCount++;
-                    totalCount++;
 
                     if (batchCount >= batchLimit) {
                         batchCount = 0;
                         console.log('Reached batch limit, waiting for an hour before continuing...');
                         await sleep(delayBetweenBatches);
                     }
-                }
 
-                if (totalCount >= totalMembers) {
-                    completed = true;
-                    break;
+                    if (totalCount >= totalMembers) {
+                        completed = true;
+                        break;
+                    }
                 }
             }
         }
